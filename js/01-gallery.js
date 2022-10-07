@@ -15,7 +15,7 @@ const arrayGallery = galleryItems.map((image) => {
     </a>
   </div>`;
 });
-divRef.insertAdjacentHTML("afterbegin", arrayGallery);
+divRef.insertAdjacentHTML("afterbegin", arrayGallery.join(""));
 console.log(arrayGallery);
 
 divRef.addEventListener("click", (event) => {
