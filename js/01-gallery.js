@@ -16,20 +16,30 @@ const arrayGallery = galleryItems.map((image) => {
 });
 divRef.insertAdjacentHTML("afterbegin", arrayGallery.join(""));
 console.log(arrayGallery);
-
+let instance;
 divRef.addEventListener("click", (event) => {
   event.preventDefault();
   if (event.target.nodeName !== "IMG") {
     return;
   }
-  let instance = basicLightbox.create(`
+instance = basicLightbox.create(
+    `
 	<img src = "${event.target.dataset.source}" width="800" height="600">
-`);
-  instance.show();
-  document.addEventListener("keydown", (onCloseModal) => {
-    if (onCloseModal.code === "Escape") {
-      instance.close();
+`,
+    {
+      onShow: () => {
+        document.addEventListener("keydown", onCloseModal);
+      },
+      onClose: () => {
+        document.removeEventListener("keydown", onCloseModal);
+      }
     }
-    document.removeEventListener("keydown", onCloseModal);
-  });
+  );
+  instance.show();
+  
 });
+function onCloseModal(event) {
+  if (event.code === "Escape") {
+    instance.close();
+  }
+}
